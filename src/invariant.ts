@@ -1,10 +1,10 @@
-/** Package-owned invariant companion. @module @deepseek-ai/dsh-marketplace/invariant */
+/** Package-owned invariant companion. @module @shamcleren/dsh-plugin-marketplace/invariant */
 
 /* jscpd:ignore-start */
 import type { Context } from '@deepseek-ai/cordis'
 import type { InvariantInstaller } from '@deepseek-ai/dsh-invariants'
 
-const PACKAGE_NAME = '@deepseek-ai/dsh-marketplace'
+const PACKAGE_NAME = '@shamcleren/dsh-plugin-marketplace'
 
 /** Cordis companion plugin name. */
 export const name = 'marketplace-invariant'

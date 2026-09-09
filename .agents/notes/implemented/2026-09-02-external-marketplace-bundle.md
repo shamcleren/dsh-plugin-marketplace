@@ -2,13 +2,13 @@
 
 ## Decision
 
-The trusted single-source Marketplace ships as an external profile bundle. Its bundle patch disables the shipped `marketplace` and `ui-marketplace` rows and inserts one package that owns the extracted Host service, Typert descriptors, and browser client.
+The trusted single-source Marketplace ships as an external profile bundle. It inserts one row owning the Host service, validated loopback-only RPC, and browser client. No private composition rows or generated remote types are required.
 
 ## Rationale
 
 Marketplace release cadence and interaction design can evolve without changing the Harness repository. The package carries credential, artifact verification, transaction, and rollback code so it remains installable even though the original Host package is not published independently.
 
-The browser uses the generic `settings.plugins.tab` slot and the public `remote.marketplace` methods. UI state is derived from the Host catalog and installed dependency list; mutation success triggers a fresh read instead of optimistic installed state.
+The browser uses the upstream `settings.plugins.tab` slot and its own `/trusted-marketplace` RPC. Operations are allowlisted and JSON-validated. UI state is derived from the catalog and installed dependency list; mutation success triggers a fresh read. Catalog compatibility uses the installed official DSH version, not the plugin version.
 
 ## Alternatives considered
 
@@ -16,4 +16,4 @@ Depending on the original Host package would avoid duplication but cannot produc
 
 ## Verification
 
-The tests pin catalog validation, repository responses, OAuth state and refresh behavior, command bounds, cache integrity, catalog/install joins, compatibility-aware update detection, search normalization, combined filters, and Typert ownership. TypeScript checks cover Host and browser entry points, the production build emits the Host module plus browser loader bundle, and a temporary Web profile reaches its loopback URL with the replacement rows composed.
+Tests cover catalog validation, repository responses, OAuth state and refresh behavior, command bounds, cache integrity, catalog/install joins, compatibility-aware updates, UI filters, and RPC rejection. TypeScript checks cover Host and browser entry points. A clean official `0.1.0-rc.8` Web profile installs the built tarball and serves its settings tab without private Host packages. Newer upstream releases and live Gongfeng sign-in require separate compatibility verification.

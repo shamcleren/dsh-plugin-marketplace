@@ -1,6 +1,6 @@
 {
   "name": "@shamcleren/dsh-plugin-marketplace",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "External trusted Marketplace bundle with a focused DeepSeek Harness management UI",
   "type": "module",
   "main": "lib/index.js",
@@ -20,7 +20,7 @@
     "client": {
       "platform": "web",
       "inject": [
-        "@deepseek-ai/dsh-api-remotes",
+        "@deepseek-ai/dsh-client-connection",
         "@deepseek-ai/dsh-client-locale",
         "@deepseek-ai/dsh-client-runtime",
         "@deepseek-ai/dsh-client-ui-settings",
@@ -41,15 +41,11 @@
       "types": "./lib/types/types.d.ts",
       "default": "./lib/types.js"
     },
-    "./typert": {
-      "types": "./typert/host.d.ts",
-      "default": "./typert/host.js"
-    },
     "./client": "./client/client.js",
     "./cordis.patch.yml": "./cordis.patch.yml",
     "./package.json": "./package.json"
   },
-  "files": ["lib", "client", "typert", "cordis.patch.yml", "README.md", "LICENSE"],
+  "files": ["lib", "client", "cordis.patch.yml", "README.md", "LICENSE"],
   "dependencies": {
     "@deepseek-ai/schemastery": "^3.18.1",
     "semver": "^7.7.2",
@@ -64,7 +60,8 @@
     "@deepseek-ai/dsh-host-webserver": "0.1.0-rc.8",
     "@deepseek-ai/dsh-invariants": "0.1.0-rc.8",
     "@deepseek-ai/dsh-settings": "0.1.0-rc.8",
-    "@deepseek-ai/dsh-typert-protocol": "0.1.0-rc.8"
+    "@deepseek-ai/dsh-client-connection": "0.1.0-rc.8",
+    "@deepseek-ai/dsh": "0.1.0-rc.8"
   },
   "devDependencies": {
     "@deepseek-ai/cordis": "^4.0.1",
@@ -75,7 +72,7 @@
     "@deepseek-ai/dsh-host-webserver": "0.1.0-rc.8",
     "@deepseek-ai/dsh-invariants": "0.1.0-rc.8",
     "@deepseek-ai/dsh-settings": "0.1.0-rc.8",
-    "@deepseek-ai/dsh-typert-protocol": "0.1.0-rc.8",
+    "@deepseek-ai/dsh-client-connection": "0.1.0-rc.8",
     "@types/node": "^26.0.0",
     "@types/react": "~18.3.1",
     "@types/semver": "^7.7.1",

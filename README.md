@@ -1,6 +1,6 @@
 # DSH Plugin Marketplace
 
-`@shamcleren/dsh-plugin-marketplace` is an external bundle for the trusted single-source DeepSeek Harness Marketplace. Installing the bundle disables the Web profile's shipped Marketplace Host and client rows, mounts the extracted Host service through this package, and registers a replacement management UI.
+`@shamcleren/dsh-plugin-marketplace` is an external bundle for a trusted single-source DeepSeek Harness Marketplace. It adds its own Host service and browser tab using upstream profile and UI extension points. It does not modify the DSH checkout or require private Marketplace packages in the Host.
 
 ## Install
 
@@ -9,7 +9,7 @@ dsh plugin --profile web add /absolute/path/to/dsh-plugin-marketplace
 dsh web
 ```
 
-The target profile must provide DeepSeek Harness `0.1.0-rc.8` APIs. The package pins its peer API range and Typert descriptors to that release; protocol or service changes require a tested package update instead of runtime fallbacks.
+The tested runtime is the official DeepSeek Harness `0.1.0-rc.8` npm distribution. Newer upstream releases require compatibility testing before updating this pin. Catalog compatibility uses the installed DSH version, not this plugin's version.
 
 ## Behavior
 
@@ -17,12 +17,7 @@ The Host accepts one configured Gongfeng repository and ref, validates the catal
 
 The browser UI provides source status, OAuth or Private Token configuration, catalog refresh, search, compatibility and update filters, installed and update counts, per-plugin progress, guarded uninstall, batch updates with partial-failure reporting, and a single restart prompt after a batch of changes.
 
-The bundle replaces these composition rows:
-
-- `marketplace`
-- `ui-marketplace`
-
-It then inserts `marketplace-external`, whose default export is the trusted Marketplace service and whose `./client` export owns the replacement browser tab.
+The bundle inserts `trusted-marketplace`. Its `./client` export uses `settings.plugins.tab` and a loopback-only `/trusted-marketplace` RPC with validated, allowlisted operations. No private `remote.marketplace` or generated Typert descriptor is required. Configuration is stored under `trusted-marketplace`; configure the trusted source again when migrating from a private Host build. Public catalogs such as `dshmarket` remain independent plugins.
 
 ## Security
 
@@ -34,10 +29,10 @@ The plugin adds no model-facing prompt sections or tools. It changes the Host co
 
 ## Known Limitations and Deferred Work
 
-- The Host implementation is extracted from the `0.1.0-rc.8` trusted Marketplace package. Security fixes in the Harness implementation must be reviewed and ported into this plugin release.
+- This repository owns the trusted-source implementation and its security updates; it is not an upstream built-in Marketplace package.
 - Only one trusted repository is active at a time. Public catalog aggregation belongs in a separate plugin such as `dshmarket`.
 - Web Host changes require a restart. The UI batches mutations and requests one restart but does not hot-load arbitrary package code.
 
 ## Verification
 
-`pnpm check` runs Host and browser type checks, 25 tests covering catalog validation, repository responses, OAuth state and refresh behavior, command bounds, cache integrity, view filters, and Typert ownership, then builds the Host and browser artifacts. A temporary Web profile smoke test must reach the printed loopback URL with the shipped Marketplace rows disabled and `marketplace-external` mounted.
+`pnpm check` runs Host and browser type checks, tests for catalog validation, repository responses, OAuth state and refresh behavior, command bounds, cache integrity, view filters, and RPC validation, then builds both artifacts. Integration verification installs the tarball into an isolated official Web profile and checks that the settings tab reads its installed package list. Live Gongfeng authorization and private artifact installation require an authorized account.

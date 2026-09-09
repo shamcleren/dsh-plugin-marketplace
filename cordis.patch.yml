@@ -1,10 +1,3 @@
-# Replace the shipped Marketplace rows after the web-app bundle has composed.
-- id: marketplace
-  disabled: true
-
-- id: ui-marketplace
-  disabled: true
-
 - insert:
-    - id: marketplace-external
+    - id: trusted-marketplace
       name: '@shamcleren/dsh-plugin-marketplace'
